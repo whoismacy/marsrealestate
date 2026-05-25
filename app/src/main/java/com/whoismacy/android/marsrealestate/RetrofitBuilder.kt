@@ -1,20 +1,24 @@
 package com.whoismacy.android.marsrealestate
 
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com"
+
+private val moshi =
+    Moshi
+        .Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
 private val retrofit by lazy {
     Retrofit
         .Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(
-            Json
-                .asConverterFactory("application/json; charset=utf-8".toMediaType()),
-        ).build()
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
 }
 
 val apiService: ApiHelper by lazy {
