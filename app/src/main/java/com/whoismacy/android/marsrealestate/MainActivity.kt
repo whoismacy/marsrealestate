@@ -33,16 +33,18 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.whoismacy.android.marsrealestate.data.model.Estate
 import com.whoismacy.android.marsrealestate.ui.theme.MarsRealEstateTheme
+import com.whoismacy.android.marsrealestate.utils.UiState
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
 import java.util.Locale
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    val repository = EstateRepository(apiService)
-    val viewModel = EstateViewModel(repository)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,7 +53,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainScreen(
                         modifier = Modifier.padding(innerPadding),
-                        viewModel = viewModel,
                     )
                 }
             }
@@ -61,11 +62,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(
-    viewModel: EstateViewModel,
     modifier: Modifier = Modifier,
+    viewModel: EstateViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     when (val state = uiState) {
         is UiState.Loading -> {
             FullScreenLoadingSpinner(modifier)

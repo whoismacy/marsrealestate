@@ -16,6 +16,8 @@ retrofit = "3.0.0"
 moshiVersion = "1.15.2"
 kotlinxCoroutines = "1.11.0"
 moshiCodegen = "1.15.2"
+hiltDaggerVersion = "2.59.2"
+hiltNavigationVersion = "1.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +42,9 @@ moshi-converter = { module = "com.squareup.retrofit2:converter-moshi", version.r
 moshi = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiVersion"}
 moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshiCodegen"}
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines"}
+hilt-dagger = { module = "com.google.dagger:hilt-android", version.ref = "hiltDaggerVersion"}
+hilt-dagger-compiler = { module = "com.google.dagger:hilt-compiler",version.ref = "hiltDaggerVersion"}
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationVersion"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
