@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 data class Estate(
     val id: String,
     val type: String,
-    @param:Json(name = "image_src") val imageUrl: String? = null,
+    @param:Json(name = "img_src") val imageUrl: String? = null,
     val price: Int,
 )
 

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -30,12 +29,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.whoismacy.android.marsrealestate.ui.theme.MarsRealEstateTheme
+import java.text.NumberFormat
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     val repository = EstateRepository(apiService)
@@ -125,7 +127,7 @@ fun DisplayData(
         modifier = modifier,
     ) {
         items(estates) { item ->
-            val rentalColor = if (item.type == "buy") Color.Green else Color.Yellow
+            val rentalColor = if (item.type == "buy") Color.Green else Color.Magenta
             OutlinedCard(
                 modifier =
                     Modifier
@@ -134,7 +136,7 @@ fun DisplayData(
                 shape = RoundedCornerShape(24.dp),
             ) {
                 Box(
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight(.75f),
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(.8f),
                     contentAlignment = Alignment.Center,
                 ) {
                     AsyncImage(
@@ -142,11 +144,13 @@ fun DisplayData(
                         contentDescription = "Image of estate ${item.id}",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
+                        placeholder = ColorPainter(Color.LightGray),
+                        error = ColorPainter(Color.Red),
                     )
                 }
-                Column(
-                    modifier = Modifier.padding(start = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     Surface(
                         color = rentalColor.copy(alpha = 0.15f),
@@ -163,9 +167,9 @@ fun DisplayData(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text("PRICE:", style = MaterialTheme.typography.bodyMedium)
+                        Text("Price:", style = MaterialTheme.typography.bodyMedium)
                         Text(
-                            item.price.toString(),
+                            formatToLocale(item.price),
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
                         )
                     }
@@ -174,3 +178,8 @@ fun DisplayData(
         }
     }
 }
+
+fun formatToLocale(num: Int): String =
+    NumberFormat
+        .getNumberInstance(Locale.getDefault())
+        .format(num)
